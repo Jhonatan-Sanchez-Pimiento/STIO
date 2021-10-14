@@ -56,29 +56,31 @@ def login():
         flash("Ya te encuentras Logueado")
         return redirect(url_for("registrar"))
     
-    else:
-        if request.method == "POST" and request.form["email"]: #verifica si es post y si el correo no esta vacio
-            correo= request.form["email"]
-            contraseña = request.form["password"]
-            try:
-                recordar = request.form["recuerdame"] #Si lo puede hacer es igual a ON
-                print("recordar Activado")
-
+    
+    if request.method == "POST": #verifica si es post y si el correo no esta vacio
+        if request.form["email"]: # si el correo no esta vacio
+            correo= request.form["email"]  # coger el correo del formulario
+            contraseña = request.form["password"] # coger la contraseña del formulario
+            #este try es para intentar coger el valor del checkbox
+            try: 
+                recordar = request.form["recuerdame"] 
+                
             except:
-                recordar = False
-                print("Recordar descativado")
-            
-            if dbFuctions.validacion_login(correo, contraseña):
+                recordar = False # en caso de que no marque la casilla
+                
+            if dbFuctions.validacion_login(correo, contraseña): # validar en la base datos correo y contraseña
                 session["correo"] = correo # agregar una session que se almacena como una cookie en el navegador del cliente con la informacion correo
-                session.permanent = False
-                if recordar:
-                    session.permanent = True
+                session.permanent = False # esto hace que se cierre la sesion cuando se cierre el navegador
+                if recordar: # en caso de que recuerdame estuviese seleccionado
+                    session.permanent = True # la session durara 3 dias
                 flash("has iniciado sesion correctamente")
-            
-            return redirect(url_for("registrar"))
+                return redirect(url_for("registrar")) 
+            else:
+                flash("Correo o contraseña erronea")  # mensajes de advertencias para las validaciones
         else:
-            flash("Verifica tus credenciales")
-            return render_template("login.html")
+            flash("No puedes dejar los campos vacio")
+
+    return render_template("login.html")
 
 
 
@@ -86,6 +88,7 @@ def login():
 @app.route("/salir")
 def logout():
     session.pop("correo")
+    flash("Cesion cerrada correctamente")
     return redirect(url_for("login"))
 
 
