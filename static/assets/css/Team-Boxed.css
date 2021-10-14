@@ -88,3 +88,10 @@
   opacity: 1;
 }
 
+#imagen-registro{
+  background-image: url('../img/dogs/image2.jpg')
+}
+
+#login-image{
+  background-image: url('../img/dogs/image1.jpg')
+}
