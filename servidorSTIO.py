@@ -33,6 +33,15 @@ class Usuario(db.Model):
 
 
 
+@app.route("/")
+def home():
+    if "correo" in session:
+        print(session["correo"])
+        return render_template("register.html")
+
+    else:
+        return redirect(url_for("login"))
+
 
 
 
