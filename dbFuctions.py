@@ -1,7 +1,9 @@
 import servidorSTIO
 
-dbSTIO = servidorSTIO.db
+db = servidorSTIO.db
 Usuario = servidorSTIO.Usuario
+
+
 
 def nuevo_usuario(nombre, correo, contraseña) -> bool:
     """
@@ -12,8 +14,8 @@ def nuevo_usuario(nombre, correo, contraseña) -> bool:
     usuarioTemp = Usuario(nombre.lower(), correo.lower(), contraseña)
     if consultar_usuario(correo) == None: 
         print("Guardado con exito")
-        dbSTIO.session.add(usuarioTemp)
-        dbSTIO.session.commit()
+        db.session.add(usuarioTemp)
+        db.session.commit()
         return True
     else:
         return False

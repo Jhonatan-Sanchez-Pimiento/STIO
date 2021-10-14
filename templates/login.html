@@ -1,6 +1,5 @@
-{% extends "usuario.html" %} {% block titulo %}Iniciar Sesion -
+{% extends "plantilla_login.html" %} {% block titulo %}Iniciar Sesion -
 STIO{%endblock %} {% block content %}
-
 {% with mensaje = get_flashed_messages() %}
   {%if mensaje%}
   <div class="alerta">

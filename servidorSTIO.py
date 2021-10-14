@@ -5,7 +5,7 @@ import dbFuctions
 
 
 app = Flask(__name__) # creacion de la app
-app.secret_key = "ASDJSADKJDASKD" # con esto codifica la sesion y la cookie
+app.secret_key = "ASDJSADKJ23432424DASKD" # con esto codifica la sesion y la cookie
 app.permanent_session_lifetime = timedelta(days = 3)
 usuarioBd = "root" # usuario en la base de datos por defecto es root
 contraseñaBd = "toor" #cambiar a tu contraseña de mysql
@@ -14,10 +14,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # esto es para que no moles
 
 db = SQLAlchemy(app) # creamos la conexion
 
-
 ### ESTOS SON MODELOS QUE REPRESENTAN LAS TABLAS EN MYSQL
 class Usuario(db.Model):
-    nombre = db.Column("nombre", db.String(50), )
+    nombre = db.Column("nombre", db.String(50))
     correo = db.Column("correo", db.String(50), primary_key = True)
     contraseña = db.Column("contraseña", db.String(80))
 
@@ -28,6 +27,9 @@ class Usuario(db.Model):
 
     def __repr__(self) -> str: 
         return f"{self.correo}"
+
+class Proyecto(db.Model):
+    id = db.Column("id", db.Integer, primary_key = True)
 
 #db.create_all() #SE EJECUTA PARA CREAR LAS TABLAS SEGUN LOS MODELOS ES MEJOR CREAR LAS TABLAS DESDE ACA
 
@@ -65,7 +67,7 @@ def login():
         flash("Ya te encuentras Logueado")
         return redirect(url_for("registrar"))
     
-    
+
     if request.method == "POST": #verifica si es post y si el correo no esta vacio
         if request.form["email"]: # si el correo no esta vacio
             correo= request.form["email"]  # coger el correo del formulario
@@ -83,7 +85,8 @@ def login():
                 if recordar: # en caso de que recuerdame estuviese seleccionado
                     session.permanent = True # la session durara 3 dias
                 flash("has iniciado sesion correctamente")
-                return redirect(url_for("registrar")) 
+                # return redirect(url_for("registrar"))
+                return render_template("index.html") 
             else:
                 flash("Correo o contraseña erronea")  # mensajes de advertencias para las validaciones
         else:
