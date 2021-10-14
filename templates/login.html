@@ -1,4 +1,4 @@
-{% extends "usuario.html" %} {% block titulo %}Recuperar Contraseña -
+{% extends "usuario.html" %} {% block titulo %}Iniciar Sesion -
 STIO{%endblock %} {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-9 col-lg-12 col-xl-10">
@@ -16,7 +16,7 @@ STIO{%endblock %} {% block content %}
               <div class="text-center">
                 <h4 class="text-dark mb-4">Bienvenido de vuelta</h4>
               </div>
-              <form class="user">
+              <form action="#" method="post" class="user">
                 <div class="mb-3">
                   <input
                     class="form-control form-control-user"
@@ -40,6 +40,7 @@ STIO{%endblock %} {% block content %}
                   <div class="custom-control custom-checkbox small">
                     <div class="form-check">
                       <input
+                        name="recuerdame"
                         class="form-check-input custom-control-input"
                         type="checkbox"
                         id="formCheck-1"
