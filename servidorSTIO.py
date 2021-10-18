@@ -39,7 +39,7 @@ class Proyecto(db.Model):
 def home():
     if "correo" in session:
         print(session["correo"])
-        return render_template("register.html")
+        return redirect(url_for(("registrar")))
 
     else:
         return redirect(url_for("login"))
@@ -47,17 +47,54 @@ def home():
 
 
 
-@app.route("/registrar")
+@app.route("/registrar", methods=["POST", "GET"])
 def registrar():
+    if (request.method == "POST") and "correo" in session:
+        nombre = request.form['primer_nombre']
+        apellido = request.form['apellidos']
+        nombre_completo =  f"{nombre} {apellido}"
+        correo = request.form["email"]
+        contraseña = request.form["password"]
+        contraseña_repetida = request.form["password_repeat"]
+        print(nombre_completo)
+        
+        if (contraseña == contraseña_repetida):
+            resultado = dbFuctions.nuevo_usuario(nombre_completo, correo, contraseña)
+            if resultado:
+                flash("Usuario registrado con exito")
+                return redirect(url_for("registrar"))
+            
+            else:
+                flash("Parece que ya existe el correo registrado")
+                return redirect(url_for("registrar"))
+
+                
+        else:
+            flash("La contraseña no son iguales o revisa los campos")
+            return redirect(url_for("registrar"))
+            
+    
     if "correo" in session:
-        print(session["correo"])
         return render_template("register.html")
+
+    
     
     else:
         return redirect(url_for("login"))
 
-@app.route("/recuperar_contraseña")
-def recuperarContraseña():
+
+@app.route("/recuperar_contraseña", methods=["POST", "GET"])
+def recuperar_contraseña():
+    if request.method == "POST":
+        correo= request.form["correo"]
+        if dbFuctions.recuperar_contraseña(correo):
+            flash("Contraseña enviada al correo por favor revise")
+            return redirect(url_for("login"))
+        else:
+            flash("parece que no existe ese correo registrado")
+            return redirect(url_for("recuperar_contraseña"))
+
+
     return render_template("forgot-password.html")
 
 
@@ -85,8 +122,8 @@ def login():
                 if recordar: # en caso de que recuerdame estuviese seleccionado
                     session.permanent = True # la session durara 3 dias
                 flash("has iniciado sesion correctamente")
-                # return redirect(url_for("registrar"))
-                return render_template("index.html") 
+                # return redirect(url_for("home"))
+                return redirect(url_for("registrar"))
             else:
                 flash("Correo o contraseña erronea")  # mensajes de advertencias para las validaciones
         else:
@@ -102,6 +139,8 @@ def logout():
     session.pop("correo")
     flash("Cesion cerrada correctamente")
     return redirect(url_for("login"))
+
+
 
 
 if __name__ == "__main__":

@@ -1,14 +1,6 @@
 {% extends "plantilla_login.html" %}
 {% block titulo %}Registrar usuario - STIO{% endblock %}
 {% block content %}
-{% with mensaje = get_flashed_messages() %}
-  {%if mensaje%}
-  <div class="alerta">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    {{mensaje[0]}}
-  </div>
-  {% endif %}
-{% endwith %}
 <div class="card shadow-lg o-hidden border-0 my-5">
     <div class="card-body p-0">
         <div class="row">
@@ -20,15 +12,15 @@
                     <div class="text-center">
                         <h4 class="text-dark mb-4">Crear una cuenta</h4>
                     </div>
-                    <form class="user">
+                    <form method="post" class="user">
                         <div class="row mb-3">
-                            <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Primer Nombre" name="first_name"></div>
-                            <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Last Name" name="last_name"></div>
+                            <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Primer Nombre" name="primer_nombre" required></div>
+                            <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Apellido" name="apellidos" required></div>
                         </div>
-                        <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Correo electronico" name="email"></div>
+                        <div class="mb-3"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Correo electronico" name="email" required></div>
                         <div class="row mb-3">
-                            <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Contraseña" name="password"></div>
-                            <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repite Contraseña" name="password_repeat"></div>
+                            <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Contraseña" name="password" required></div>
+                            <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repite Contraseña" name="password_repeat" required></div>
                         </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Registrar</button>
                         <!-- <hr><a  class="btn btn-primary d-block btn-google btn-user w-100 mb-2" role="button"><i class="fab fa-google"></i>&nbsp; No funciona aun </a><a class="btn btn-primary d-block btn-facebook btn-user w-100" role="button"><i class="fab fa-facebook-f"></i>&nbsp; no funciona aun</a>
                         <hr> -->

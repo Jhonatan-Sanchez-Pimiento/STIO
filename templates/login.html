@@ -1,13 +1,5 @@
 {% extends "plantilla_login.html" %} {% block titulo %}Iniciar Sesion -
 STIO{%endblock %} {% block content %}
-{% with mensaje = get_flashed_messages() %}
-  {%if mensaje%}
-  <div class="alerta">
-    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    {{mensaje[0]}}
-  </div>
-  {% endif %}
-{% endwith %}
 <div class="row justify-content-center">
   <div class="col-md-9 col-lg-12 col-xl-10">
     <div class="card shadow-lg o-hidden border-0 my-5">
