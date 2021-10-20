@@ -63,9 +63,9 @@ def enviar_correo_recuperar_contraseña(usuario):
 
 def enviar_correo(correo ,mensaje):
     """Enviar correo al correo que le pasen por parametro y el mensaje de tipo EmailMessage()"""
-    #FIXME: agregar correo y contraseña del correo stio
-    correo_stio = "" 
-    contraseña = ""
+    
+    correo_stio = "stio.sistema@gmail.com" 
+    contraseña = "stio12345"
     mensaje['From'] = correo_stio
     mensaje['To'] = correo
 

@@ -1,9 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template,url_for , flash,  request, session, redirect
 
-import dbFuctions
 import app_config
-
 
 
 app = Flask(__name__) # creacion de la app
@@ -14,6 +12,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = app_config.permitir_notificacione
 
 db = SQLAlchemy(app) # creamos la conexion con la base de datos
 
+import dbFuctions
 
 
 
