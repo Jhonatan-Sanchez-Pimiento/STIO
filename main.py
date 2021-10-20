@@ -60,6 +60,7 @@ def registrar():
     
     
     else:
+        flash("no has iniciado sesion")
         return redirect(url_for("login"))
 
 
