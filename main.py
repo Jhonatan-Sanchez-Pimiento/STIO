@@ -1,15 +1,16 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template,url_for , flash,  request, session, redirect
+
 import dbFuctions
 import app_config
 
 
 
 app = Flask(__name__) # creacion de la app
-app.secret_key = app_config.secret_key # con esto codifica la sesion y la cookie
-app.permanent_session_lifetime = app_config.duracion_max_session
+app.secret_key = app_config.codigo_encriptacion # con esto codifica la sesion y la cookie
+app.permanent_session_lifetime = app_config.duracion_max_sesion
 app.config["SQLALCHEMY_DATABASE_URI"] = app_config.uri_db 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = app_config.modification_sql
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = app_config.permitir_notificaciones_sql
 
 db = SQLAlchemy(app) # creamos la conexion con la base de datos
 
@@ -19,8 +20,8 @@ db = SQLAlchemy(app) # creamos la conexion con la base de datos
 @app.route("/")
 def home():
     if "correo" in session:
-        print(session["correo"])
-        return redirect(url_for(("registrar")))
+        # print(session["correo"])
+        return redirect(url_for(("index")))
 
     else:
         return redirect(url_for("login"))
@@ -114,8 +115,6 @@ def login():
     return render_template("login.html")
 
 
-
-
 @app.route("/salir")
 def logout():
     session.pop("correo")
@@ -123,7 +122,16 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/index")
+def index():
+    if "correo" in session:
+        correo = session["correo"]
+        usuario = dbFuctions.consultar_usuario(correo)
+        return(render_template("index.html", nombre=usuario.nombre))
 
+    else: 
+        flash("No has iniciado sesion")
+        return redirect(url_for("login"))
 
 if __name__ == "__main__":
     app.run(debug=True)

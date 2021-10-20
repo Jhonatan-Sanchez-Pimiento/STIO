@@ -1,4 +1,4 @@
-from main import db, app
+from main import db
 from model_db import Usuario
 
 import smtplib, ssl
