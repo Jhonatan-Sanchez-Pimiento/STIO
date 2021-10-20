@@ -1,37 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import timedelta
 from flask import Flask, render_template,url_for , flash,  request, session, redirect
 import dbFuctions
+import app_config
+
 
 
 app = Flask(__name__) # creacion de la app
-app.secret_key = "ASDJSADKJ23432424DASKD" # con esto codifica la sesion y la cookie
-app.permanent_session_lifetime = timedelta(days = 3)
-usuarioBd = "root" # usuario en la base de datos por defecto es root
-contraseñaBd = "toor" #cambiar a tu contraseña de mysql
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql://{usuarioBd}:{contraseñaBd}@localhost/stio" # Aqui se dice utilizar la base de datos stio que esta en mysql y se le da las credencias
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # esto es para que no moleste la base de datos al cambiar
+app.secret_key = app_config.secret_key # con esto codifica la sesion y la cookie
+app.permanent_session_lifetime = app_config.duracion_max_session
+app.config["SQLALCHEMY_DATABASE_URI"] = app_config.uri_db 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = app_config.modification_sql
 
-db = SQLAlchemy(app) # creamos la conexion
+db = SQLAlchemy(app) # creamos la conexion con la base de datos
 
-### ESTOS SON MODELOS QUE REPRESENTAN LAS TABLAS EN MYSQL
-class Usuario(db.Model):
-    nombre = db.Column("nombre", db.String(50))
-    correo = db.Column("correo", db.String(50), primary_key = True)
-    contraseña = db.Column("contraseña", db.String(80))
-
-    def __init__(self, nombre,correo,contraseña) -> None:
-        self.nombre = nombre
-        self.correo = correo
-        self.contraseña = contraseña
-
-    def __repr__(self) -> str: 
-        return f"{self.correo}"
-
-class Proyecto(db.Model):
-    id = db.Column("id", db.Integer, primary_key = True)
-
-#db.create_all() #SE EJECUTA PARA CREAR LAS TABLAS SEGUN LOS MODELOS ES MEJOR CREAR LAS TABLAS DESDE ACA
 
 
 
@@ -59,16 +40,15 @@ def registrar():
         print(nombre_completo)
         
         if (contraseña == contraseña_repetida):
-            resultado = dbFuctions.nuevo_usuario(nombre_completo, correo, contraseña)
-            if resultado:
+            resultado_crear_usuario = dbFuctions.nuevo_usuario(nombre_completo, correo, contraseña)
+            if resultado_crear_usuario:
                 flash("Usuario registrado con exito")
                 return redirect(url_for("registrar"))
             
             else:
                 flash("Parece que ya existe el correo registrado")
                 return redirect(url_for("registrar"))
-
-                
+      
         else:
             flash("La contraseña no son iguales o revisa los campos")
             return redirect(url_for("registrar"))
@@ -87,7 +67,9 @@ def registrar():
 def recuperar_contraseña():
     if request.method == "POST":
         correo= request.form["correo"]
-        if dbFuctions.recuperar_contraseña(correo):
+        resultado_recuperar_contraseña = dbFuctions.recuperar_contraseña(correo)
+        
+        if resultado_recuperar_contraseña:
             flash("Contraseña enviada al correo por favor revise")
             return redirect(url_for("login"))
         else:

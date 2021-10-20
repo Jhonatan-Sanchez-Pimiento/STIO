@@ -1,10 +1,9 @@
-import servidorSTIO
+from main import db, app
+from model_db import Usuario
 
 import smtplib, ssl
 from email.message import EmailMessage
 
-db = servidorSTIO.db
-Usuario = servidorSTIO.Usuario
 
 
 
