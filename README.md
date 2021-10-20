@@ -10,5 +10,5 @@ Flask-SQLAlchemy
 
 mysqlclient
 
-## Tambien es necesario crear una base de datos en mysql con el nombre "stio"
+## Por ahora la base de datos esta en la carpeta tmp y se esta usando sqlite3
 

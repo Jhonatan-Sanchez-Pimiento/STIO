@@ -126,7 +126,7 @@ def index():
     if "correo" in session:
         correo = session["correo"]
         usuario = dbFuctions.consultar_usuario(correo)
-        return(render_template("index.html", nombre=usuario.nombre))
+        return(render_template("index.html", nombre=usuario.nombre.title())) # pasar el nombre comenzando con mayusculas
 
     else: 
         flash("No has iniciado sesion")
