@@ -84,8 +84,7 @@ def recuperar_contraseña():
 @app.route("/ingresar", methods=["POST", "GET"])
 def login():
     if "correo" in session: # verificar si se encuntra logueado
-        flash("Ya te encuentras Logueado")
-        return redirect(url_for("registrar"))
+        return redirect(url_for("index"))
     
 
     if request.method == "POST": #verifica si es post y si el correo no esta vacio
@@ -106,7 +105,7 @@ def login():
                     session.permanent = True # la session durara 3 dias
                 flash("has iniciado sesion correctamente")
                 # return redirect(url_for("home"))
-                return redirect(url_for("registrar"))
+                return redirect(url_for("index"))
             else:
                 flash("Correo o contraseña erronea")  # mensajes de advertencias para las validaciones
         else:
